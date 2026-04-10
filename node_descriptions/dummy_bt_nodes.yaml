@@ -1,0 +1,142 @@
+bt_nodes:
+  - name: "Speak"
+    type: "Action"
+    description: "Dummy action that logs the text it would speak. Simulates TTS output without any service call."
+    ports:
+      - name: "text"
+        direction: "Input"
+        type: "string"
+        description: "Text to be spoken (required)."
+    return:
+      SUCCESS: "Always succeeds after logging the text."
+      FAILURE: "The required 'text' input port is missing."
+
+  - name: "Listen"
+    type: "Action"
+    description: "Dummy action that simulates listening to the user and capturing their speech. Writes a placeholder string to the output port."
+    ports:
+      - name: "timeout"
+        direction: "Input"
+        type: "int"
+        description: "Listening timeout in ms (optional, default: 5000)."
+      - name: "speech"
+        direction: "Output"
+        type: "string"
+        description: "Transcribed speech from the user."
+    return:
+      SUCCESS: "Always succeeds and writes a dummy transcription to the 'speech' output port."
+
+  - name: "Confirm"
+    type: "Action"
+    description: "Dummy action that simulates asking the user a yes/no question. Always confirms (writes 'true' to the output port)."
+    ports:
+      - name: "text"
+        direction: "Input"
+        type: "string"
+        description: "Confirmation prompt to show or ask the user (required)."
+      - name: "confirmed"
+        direction: "Output"
+        type: "string"
+        description: "User confirmation result ('true' or 'false')."
+    return:
+      SUCCESS: "Always succeeds and writes 'true' to the 'confirmed' output port."
+      FAILURE: "The required 'text' input port is missing."
+
+  - name: "Ask"
+    type: "Action"
+    description: "Dummy action that simulates asking the user an open-ended question and capturing their answer."
+    ports:
+      - name: "question"
+        direction: "Input"
+        type: "string"
+        description: "Question to ask the user (required)."
+      - name: "answer"
+        direction: "Output"
+        type: "string"
+        description: "The user's answer."
+    return:
+      SUCCESS: "Always succeeds and writes a dummy answer to the 'answer' output port."
+      FAILURE: "The required 'question' input port is missing."
+
+  - name: "NavigateTo"
+    type: "Action"
+    description: "Dummy action that simulates navigating the robot to a named location or to map coordinates."
+    ports:
+      - name: "target"
+        direction: "Input"
+        type: "string"
+        description: "Destination name (e.g. 'kitchen', 'entrance') or frame id (required)."
+      - name: "x"
+        direction: "Input"
+        type: "double"
+        description: "X coordinate in metres (optional, default: 0.0)."
+      - name: "y"
+        direction: "Input"
+        type: "double"
+        description: "Y coordinate in metres (optional, default: 0.0)."
+    return:
+      SUCCESS: "Always succeeds after logging the destination."
+      FAILURE: "The required 'target' input port is missing."
+
+  - name: "Follow"
+    type: "Action"
+    description: "Dummy action that simulates making the robot follow a target entity (person, object, etc.)."
+    ports:
+      - name: "target"
+        direction: "Input"
+        type: "string"
+        description: "Entity name or frame id to follow (e.g. 'person_1') (required)."
+    return:
+      SUCCESS: "Always succeeds after logging the target."
+      FAILURE: "The required 'target' input port is missing."
+
+  - name: "Wait"
+    type: "Action"
+    description: "Dummy action that simulates waiting for a given number of seconds. Returns immediately without blocking."
+    ports:
+      - name: "seconds"
+        direction: "Input"
+        type: "double"
+        description: "Duration to wait in seconds (optional, default: 1.0)."
+    return:
+      SUCCESS: "Always succeeds after logging the requested duration."
+
+  - name: "IsDetected"
+    type: "Condition"
+    description: "Dummy condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true."
+    ports:
+      - name: "target"
+        direction: "Input"
+        type: "string"
+        description: "Target class or entity name to check (e.g. 'person', 'cup') (required)."
+    return:
+      SUCCESS: "Always succeeds (target considered detected)."
+      FAILURE: "The required 'target' input port is missing."
+
+  - name: "SetTarget"
+    type: "Action"
+    description: "Dummy action that simulates configuring the perception system to search for a specific target class."
+    ports:
+      - name: "target"
+        direction: "Input"
+        type: "string"
+        description: "Target class name to activate in the perception system (e.g. 'person', 'bottle') (required)."
+    return:
+      SUCCESS: "Always succeeds after logging the target class."
+      FAILURE: "The required 'target' input port is missing."
+
+  - name: "ExecuteAction"
+    type: "Action"
+    description: "Generic dummy action executor for any task not covered by the specific nodes (e.g. open_door, pick_object, charge_battery, send_notification). Accepts an optional comma-separated key=value parameter string."
+    ports:
+      - name: "action"
+        direction: "Input"
+        type: "string"
+        description: "Name of the action to execute (e.g. 'open_door', 'pick_object') (required)."
+      - name: "params"
+        direction: "Input"
+        type: "string"
+        description: "Optional parameters as comma-separated key=value pairs (e.g. 'door=main,speed=slow')."
+    return:
+      SUCCESS: "Always succeeds after logging the action name and parameters."
+      FAILURE: "The required 'action' input port is missing."
