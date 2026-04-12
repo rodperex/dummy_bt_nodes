@@ -13,7 +13,7 @@ NavigateTo::NavigateTo(const std::string & name, const BT::NodeConfig & conf)
 BT::NodeStatus NavigateTo::tick()
 {
   std::string target;
-  if (!getInput("target", target)) {
+  if (!getInput("target", target) || target.empty()) {
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "NavigateTo: missing required input 'target'");
     }

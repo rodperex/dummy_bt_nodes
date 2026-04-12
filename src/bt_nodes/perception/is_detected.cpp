@@ -23,6 +23,9 @@ BT::NodeStatus IsDetected::tick()
   if (node_) {
     RCLCPP_INFO(node_->get_logger(), "[DUMMY] IsDetected: target=\"%s\" → true", target.c_str());
   }
+  // Write the detected entity name to the optional output port so downstream
+  // nodes (e.g. NavigateTo) can use it as a navigation target.
+  setOutput("detected_frame", target);
   return BT::NodeStatus::SUCCESS;
 }
 

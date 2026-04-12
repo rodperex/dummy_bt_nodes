@@ -6,7 +6,7 @@ bt_nodes:
       - name: "text"
         direction: "Input"
         type: "string"
-        description: "Text to be spoken (required)."
+        description: "Text to be spoken (required). Can be a hardcoded literal (e.g. <Speak text=\"Hello!\"/>) or a blackboard reference written by a previous node (e.g. <Speak text=\"{extracted_info}\"/>). The value must be set at runtime — never use a blackboard reference that has not been written yet."
     return:
       SUCCESS: "Always succeeds after logging the text."
       FAILURE: "The required 'text' input port is missing."
@@ -33,7 +33,7 @@ bt_nodes:
       - name: "text"
         direction: "Input"
         type: "string"
-        description: "Confirmation prompt to show or ask the user (required)."
+        description: "Confirmation prompt to show or ask the user (required). Can be a hardcoded literal (e.g. <Confirm text=\"Is that correct?\"/>) or a blackboard reference written by a previous node. The value must be set at runtime — never use a blackboard reference that has not been written yet."
       - name: "confirmed"
         direction: "Output"
         type: "string"
@@ -49,7 +49,7 @@ bt_nodes:
       - name: "question"
         direction: "Input"
         type: "string"
-        description: "Question to ask the user (required)."
+        description: "Question to ask the user (required). Can be a hardcoded literal (e.g. <Ask question=\"What would you like to order?\" answer=\"{customer_order}\"/>) or a blackboard reference written by a previous node. The value must be set at runtime — never use a blackboard reference that has not been written yet."
       - name: "answer"
         direction: "Output"
         type: "string"
@@ -65,7 +65,7 @@ bt_nodes:
       - name: "target"
         direction: "Input"
         type: "string"
-        description: "Destination name (e.g. 'kitchen', 'entrance') or frame id (required)."
+        description: "Destination name (e.g. 'kitchen', 'entrance') or blackboard reference (e.g. '{customer_location}') (required). The blackboard reference must be written by a previous node before this one runs."
       - name: "x"
         direction: "Input"
         type: "double"
@@ -76,7 +76,7 @@ bt_nodes:
         description: "Y coordinate in metres (optional, default: 0.0)."
     return:
       SUCCESS: "Always succeeds after logging the destination."
-      FAILURE: "The required 'target' input port is missing."
+      FAILURE: "The required 'target' input port is missing or its blackboard reference is unset."
 
   - name: "Follow"
     type: "Action"
@@ -103,14 +103,18 @@ bt_nodes:
 
   - name: "IsDetected"
     type: "Condition"
-    description: "Dummy condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true."
+    description: "Dummy condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true. Writes the detected entity name to the optional 'detected_frame' output port so downstream nodes such as NavigateTo can use it as a navigation target."
     ports:
       - name: "target"
         direction: "Input"
         type: "string"
         description: "Target class or entity name to check (e.g. 'person', 'cup') (required)."
+      - name: "detected_frame"
+        direction: "Output"
+        type: "string"
+        description: "Writes the detected entity name (same as 'target') to the blackboard. Use this to pass the detected entity's location to NavigateTo. Example: <IsDetected target=\"customer\" detected_frame=\"{customer_location}\"/>"
     return:
-      SUCCESS: "Always succeeds (target considered detected)."
+      SUCCESS: "Always succeeds (target considered detected). Writes 'target' value to 'detected_frame' if the port is mapped."
       FAILURE: "The required 'target' input port is missing."
 
   - name: "SetTarget"
@@ -125,22 +129,6 @@ bt_nodes:
       SUCCESS: "Always succeeds after logging the target class."
       FAILURE: "The required 'target' input port is missing."
 
-  - name: "ExecuteAction"
-    type: "Action"
-    description: "Generic dummy action executor for any task not covered by the specific nodes (e.g. open_door, pick_object, charge_battery, send_notification). Accepts an optional comma-separated key=value parameter string."
-    ports:
-      - name: "action"
-        direction: "Input"
-        type: "string"
-        description: "Name of the action to execute (e.g. 'open_door', 'pick_object') (required)."
-      - name: "params"
-        direction: "Input"
-        type: "string"
-        description: "Optional parameters as comma-separated key=value pairs (e.g. 'door=main,speed=slow')."
-    return:
-      SUCCESS: "Always succeeds after logging the action name and parameters."
-      FAILURE: "The required 'action' input port is missing."
-
   - name: "SpeakEnum"
     type: "Action"
     description: "Dummy action that enumerates and speaks a list of items using TTS with proper conjunction."
@@ -148,7 +136,7 @@ bt_nodes:
       - name: "text"
         direction: "Input"
         type: "string"
-        description: "Items to speak, separated by separator (required)."
+        description: "Comma-separated list of items to speak (required). Can be a hardcoded literal (e.g. <SpeakEnum text=\"soup,salad,water\"/>) or a blackboard reference written by a previous node (e.g. <SpeakEnum text=\"{full_order}\"/>). The value must be set at runtime — never use a blackboard reference that has not been written yet."
       - name: "separator"
         direction: "Input"
         type: "string"

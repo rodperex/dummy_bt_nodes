@@ -49,16 +49,10 @@ The package builds a single shared library **`libdummy_bt_nodes_plugin.so`** tha
 
 ### Perception
 
-| Node | Type | Required ports |
-|---|---|---|
-| `IsDetected` | Condition | `target` (string) |
-| `SetTarget` | Action | `target` (string) |
-
-### Support
-
-| Node | Type | Required ports | Optional ports |
+| Node | Type | Required ports | Output ports |
 |---|---|---|---|
-| `ExecuteAction` | Action | `action` (string) | `params` (string, comma-separated `key=value`) |
+| `IsDetected` | Condition | `target` (string) | `detected_frame` (string — writes `target` value for downstream nodes) |
+| `SetTarget` | Action | `target` (string) | — |
 
 ---
 

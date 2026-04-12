@@ -10,9 +10,11 @@ namespace dummy_bt_nodes
 
 /// Dummy condition — simulates checking whether a target is detected.
 /// Always returns SUCCESS (dummy). Fails only if 'target' port is missing.
+/// Optionally writes the detected entity's name to 'detected_frame' so
+/// downstream nodes (e.g. NavigateTo) can navigate to it.
 ///
 /// XML usage:
-///   <IsDetected target="person_1"/>
+///   <IsDetected target="person_1" detected_frame="{customer_location}"/>
 class IsDetected : public BT::ConditionNode
 {
 public:
@@ -27,6 +29,7 @@ public:
   {
     return {
       BT::InputPort<std::string>("target", "Target entity name or frame id"),
+      BT::OutputPort<std::string>("detected_frame", "Writes the detected entity name to the blackboard (same as 'target')."),
     };
   }
 
