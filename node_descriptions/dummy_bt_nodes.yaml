@@ -1,19 +1,19 @@
 bt_nodes:
   - name: "Speak"
     type: "Action"
-    description: "Dummy action that logs the text it would speak. Simulates TTS output without any service call."
+    description: "Speaks the provided text using TTS."
     ports:
       - name: "text"
         direction: "Input"
         type: "string"
         description: "Text to be spoken (required). Can be a hardcoded literal (e.g. <Speak text=\"Hello!\"/>) or a blackboard reference written by a previous node (e.g. <Speak text=\"{extracted_info}\"/>). The value must be set at runtime — never use a blackboard reference that has not been written yet."
     return:
-      SUCCESS: "Always succeeds after logging the text."
+      SUCCESS: "Speaks the text provided."
       FAILURE: "The required 'text' input port is missing."
 
   - name: "Listen"
     type: "Action"
-    description: "Dummy action that simulates listening to the user and capturing their speech. Writes a placeholder string to the output port."
+    description: "Listens to the user and captures their speech. Writes the recognized transcription to the output port."
     ports:
       - name: "timeout"
         direction: "Input"
@@ -24,11 +24,11 @@ bt_nodes:
         type: "string"
         description: "Transcribed speech from the user."
     return:
-      SUCCESS: "Always succeeds and writes a dummy transcription to the 'speech' output port."
+      SUCCESS: "Writes the recognized transcription to the 'speech' output port."
 
   - name: "Confirm"
     type: "Action"
-    description: "Dummy action that simulates asking the user a yes/no question. Always confirms (writes 'true' to the output port)."
+    description: "Asks the user a yes/no question and returns the confirmation result."
     ports:
       - name: "text"
         direction: "Input"
@@ -39,12 +39,12 @@ bt_nodes:
         type: "string"
         description: "User confirmation result ('true' or 'false')."
     return:
-      SUCCESS: "Always succeeds and writes 'true' to the 'confirmed' output port."
+      SUCCESS: "Writes the confirmation result ('true' or 'false') to the 'confirmed' output port."
       FAILURE: "The required 'text' input port is missing."
 
   - name: "Ask"
     type: "Action"
-    description: "Dummy action that simulates asking the user an open-ended question and capturing their answer."
+    description: "Asks the user an open-ended question and captures their answer."
     ports:
       - name: "question"
         direction: "Input"
@@ -55,12 +55,12 @@ bt_nodes:
         type: "string"
         description: "The user's answer."
     return:
-      SUCCESS: "Always succeeds and writes a dummy answer to the 'answer' output port."
+      SUCCESS: "Writes the user's answer to the 'answer' output port."
       FAILURE: "The required 'question' input port is missing."
 
   - name: "NavigateTo"
     type: "Action"
-    description: "Dummy action that simulates navigating the robot to a named location or to map coordinates."
+    description: "Navigates the robot to a named location or to map coordinates."
     ports:
       - name: "target"
         direction: "Input"
@@ -75,35 +75,35 @@ bt_nodes:
         type: "double"
         description: "Y coordinate in metres (optional, default: 0.0)."
     return:
-      SUCCESS: "Always succeeds after logging the destination."
+      SUCCESS: "Reaches the destination and signals completion."
       FAILURE: "The required 'target' input port is missing or its blackboard reference is unset."
 
   - name: "Follow"
     type: "Action"
-    description: "Dummy action that simulates making the robot follow a target entity (person, object, etc.)."
+    description: "Makes the robot follow a target entity (person, object, etc.)."
     ports:
       - name: "target"
         direction: "Input"
         type: "string"
         description: "Entity name or frame id to follow (e.g. 'person_1') (required)."
     return:
-      SUCCESS: "Always succeeds after logging the target."
+      SUCCESS: "Follows the target entity."
       FAILURE: "The required 'target' input port is missing."
 
   - name: "Wait"
     type: "Action"
-    description: "Dummy action that simulates waiting for a given number of seconds. Returns immediately without blocking."
+    description: "Waits for a given number of seconds. Returns immediately without blocking."
     ports:
       - name: "seconds"
         direction: "Input"
         type: "double"
         description: "Duration to wait in seconds (optional, default: 1.0)."
     return:
-      SUCCESS: "Always succeeds after logging the requested duration."
+      SUCCESS: "Waits for the requested duration."
 
   - name: "IsDetected"
     type: "Condition"
-    description: "Dummy condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true. Writes the detected entity name to the optional 'detected_frame' output port so downstream nodes such as NavigateTo can use it as a navigation target."
+    description: "Checks whether a target entity is currently detected by the perception system. Writes the detected entity name to the optional 'detected_frame' output port so downstream nodes such as NavigateTo can use it as a navigation target."
     ports:
       - name: "target"
         direction: "Input"
@@ -114,24 +114,24 @@ bt_nodes:
         type: "string"
         description: "Writes the detected entity name (same as 'target') to the blackboard. Use this to pass the detected entity's location to NavigateTo. Example: <IsDetected target=\"customer\" detected_frame=\"{customer_location}\"/>"
     return:
-      SUCCESS: "Always succeeds (target considered detected). Writes 'target' value to 'detected_frame' if the port is mapped."
+      SUCCESS: "If the target is detected, writes its name to 'detected_frame'."
       FAILURE: "The required 'target' input port is missing."
 
   - name: "SetTarget"
     type: "Action"
-    description: "Dummy action that simulates configuring the perception system to search for a specific target class."
+    description: "Configures the perception system to search for a specific target class (e.g. 'person', 'bottle')."
     ports:
       - name: "target"
         direction: "Input"
         type: "string"
         description: "Target class name to activate in the perception system (e.g. 'person', 'bottle') (required)."
     return:
-      SUCCESS: "Always succeeds after logging the target class."
+      SUCCESS: "Configures the perception system for the target class."
       FAILURE: "The required 'target' input port is missing."
 
   - name: "SpeakEnum"
     type: "Action"
-    description: "Dummy action that enumerates and speaks a list of items using TTS with proper conjunction."
+    description: "Enumerates and speaks a list of items using TTS with proper conjunction."
     ports:
       - name: "text"
         direction: "Input"
@@ -146,12 +146,12 @@ bt_nodes:
         type: "string"
         description: "Language for final conjunction: 'en' or 'es' (default: 'en')."
     return:
-      SUCCESS: "Always succeeds after logging the enumerated items."
+      SUCCESS: "Speaks the enumerated items."
       FAILURE: "The required 'text' input port is missing or contains no items."
 
   - name: "Extract"
     type: "Action"
-    description: "Dummy action that extracts information of interest from a text using an LLM service."
+    description: "Extracts information of interest from a text using an LLM service."
     ports:
       - name: "interest"
         direction: "Input"
@@ -166,12 +166,12 @@ bt_nodes:
         type: "string"
         description: "The extracted information."
     return:
-      SUCCESS: "Always succeeds and writes a dummy result to 'extracted_info'."
+      SUCCESS: "Writes the extracted information to 'extracted_info'."
       FAILURE: "Required inputs 'interest' or 'text' are missing."
 
   - name: "FollowDynamic"
     type: "Action"
-    description: "Dummy action that simulates following a person with dynamic speed and distance adjustments."
+    description: "Follows a person with dynamic speed and distance adjustments."
     ports:
       - name: "target_frame"
         direction: "Input"
@@ -190,22 +190,22 @@ bt_nodes:
         type: "bool"
         description: "Return SUCCESS when target is within min_distance (optional, default: false)."
     return:
-      SUCCESS: "Always succeeds after logging the target frame."
+      SUCCESS: "Follows the target frame with dynamic adjustments."
 
   - name: "SpinSearch"
     type: "Action"
-    description: "Dummy action that simulates making the robot spin in place to search for targets."
+    description: "Initiates a continuous spinning motion to scan the environment. As a non-terminating action that rotates the robot incrementally per tick and always yields RUNNING, it functions as a background maneuver that relies on parent reactive nodes to run concurrently with target detection conditions."
     ports:
       - name: "angular_speed"
         direction: "Input"
         type: "float"
         description: "Angular speed in rad/s (optional, default: 0.5)."
     return:
-      SUCCESS: "Always succeeds after logging the spin command."
+      SUCCESS: "Spins in place to search for targets."
 
   - name: "SetRos2Param"
     type: "Action"
-    description: "Dummy action that simulates setting a parameter on a ROS 2 node."
+    description: "Sets a parameter on a ROS 2 node."
     ports:
       - name: "node_name"
         direction: "Input"
@@ -228,5 +228,5 @@ bt_nodes:
         type: "bool"
         description: "Whether the operation succeeded."
     return:
-      SUCCESS: "Always succeeds after logging the parameter change."
+      SUCCESS: "Sets the parameter and signals success."
       FAILURE: "Required inputs 'node_name', 'param_name', or 'param_value' are missing."
