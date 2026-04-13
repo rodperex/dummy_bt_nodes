@@ -23,7 +23,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates navigating the robot to a named location or to map coordinates.";
+    "Action that simulates navigating the robot to a named location or to map coordinates.";
 
   static BT::PortsList providedPorts()
   {

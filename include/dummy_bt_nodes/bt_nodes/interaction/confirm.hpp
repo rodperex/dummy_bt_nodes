@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates asking the user a yes/no question. Always confirms (writes 'true' to the output port).";
+    "Action that simulates asking the user a yes/no question. Always confirms (writes 'true' to the output port).";
 
   static BT::PortsList providedPorts()
   {

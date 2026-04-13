@@ -21,7 +21,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates following a person with dynamic speed and distance adjustments.";
+    "Action that simulates following a person with dynamic speed and distance adjustments.";
 
   static BT::PortsList providedPorts()
   {

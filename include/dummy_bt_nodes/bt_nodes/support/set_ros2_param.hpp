@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates setting a parameter on a ROS 2 node.";
+    "Action that simulates setting a parameter on a ROS 2 node.";
 
   static BT::PortsList providedPorts()
   {

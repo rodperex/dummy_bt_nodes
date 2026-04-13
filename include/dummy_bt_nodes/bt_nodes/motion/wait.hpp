@@ -21,7 +21,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates waiting for a given number of seconds. Returns immediately without blocking.";
+    "Action that simulates waiting for a given number of seconds. Returns immediately without blocking.";
 
   static BT::PortsList providedPorts()
   {

@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that enumerates and speaks a list of items using TTS with proper conjunction.";
+    "Action that enumerates and speaks a list of items using TTS with proper conjunction.";
 
   static BT::PortsList providedPorts()
   {

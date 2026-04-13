@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that logs the text it would speak. Simulates TTS output without any service call.";
+    "Action that logs the text it would speak. Simulates TTS output without any service call.";
 
   static BT::PortsList providedPorts()
   {

@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that extracts information of interest from a text using an LLM service.";
+    "Action that extracts information of interest from a text using an LLM service.";
 
   static BT::PortsList providedPorts()
   {

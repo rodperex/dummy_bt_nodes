@@ -21,7 +21,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates configuring the perception system to search for a specific target class.";
+    "Action that simulates configuring the perception system to search for a specific target class.";
 
   static BT::PortsList providedPorts()
   {

@@ -23,7 +23,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true.";
+    "Condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true.";
 
   static BT::PortsList providedPorts()
   {

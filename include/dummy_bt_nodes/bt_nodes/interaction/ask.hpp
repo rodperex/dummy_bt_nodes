@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates asking the user an open-ended question and capturing their answer.";
+    "Action that simulates asking the user an open-ended question and capturing their answer.";
 
   static BT::PortsList providedPorts()
   {

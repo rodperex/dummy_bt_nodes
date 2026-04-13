@@ -30,7 +30,6 @@ add_library(dummy_bt_nodes_plugin SHARED
   src/bt_nodes/motion/wait.cpp
   src/bt_nodes/perception/is_detected.cpp
   src/bt_nodes/perception/set_target.cpp
-  src/bt_nodes/support/execute_action.cpp
   src/bt_nodes/support/set_ros2_param.cpp
   src/bt_nodes/bt_plugins.cpp
 )

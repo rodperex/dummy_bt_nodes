@@ -21,7 +21,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates making the robot follow a target entity (person, object, etc.).";
+    "Action that simulates making the robot follow a target entity (person, object, etc.).";
 
   static BT::PortsList providedPorts()
   {

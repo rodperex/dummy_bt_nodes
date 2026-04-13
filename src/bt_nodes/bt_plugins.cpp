@@ -14,7 +14,6 @@
 #include "dummy_bt_nodes/bt_nodes/motion/wait.hpp"
 #include "dummy_bt_nodes/bt_nodes/perception/is_detected.hpp"
 #include "dummy_bt_nodes/bt_nodes/perception/set_target.hpp"
-#include "dummy_bt_nodes/bt_nodes/support/execute_action.hpp"
 #include "dummy_bt_nodes/bt_nodes/support/set_ros2_param.hpp"
 
 BT_REGISTER_NODES(factory)
@@ -52,8 +51,6 @@ BT_REGISTER_NODES(factory)
   dummy_bt_nodes::bt_register_node_description("SetTarget", dummy_bt_nodes::SetTarget::node_description);
 
   // Support
-  factory.registerNodeType<dummy_bt_nodes::ExecuteAction>("ExecuteAction");
-  dummy_bt_nodes::bt_register_node_description("ExecuteAction", dummy_bt_nodes::ExecuteAction::node_description);
   factory.registerNodeType<dummy_bt_nodes::SetRos2Param>("SetRos2Param");
   dummy_bt_nodes::bt_register_node_description("SetRos2Param", dummy_bt_nodes::SetRos2Param::node_description);
 }

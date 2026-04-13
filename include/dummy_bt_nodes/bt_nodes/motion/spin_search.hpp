@@ -21,7 +21,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates making the robot spin in place to search for targets.";
+    "Action that simulates making the robot spin in place to search for targets.";
 
   static BT::PortsList providedPorts()
   {

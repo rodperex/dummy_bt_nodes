@@ -22,7 +22,7 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Dummy action that simulates listening to the user and capturing their speech. Writes a placeholder string to the output port.";
+    "Action that simulates listening to the user and capturing their speech. Writes a placeholder string to the output port.";
 
   static BT::PortsList providedPorts()
   {
