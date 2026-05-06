@@ -1,5 +1,5 @@
-#ifndef DUMMY_BT_NODES__BT_NODES__INTERACTION__CONFIRM_HPP_
-#define DUMMY_BT_NODES__BT_NODES__INTERACTION__CONFIRM_HPP_
+#ifndef DUMMY_BT_NODES__BT_NODES__INTERACTION__YESNO_HPP_
+#define DUMMY_BT_NODES__BT_NODES__INTERACTION__YESNO_HPP_
 
 #include <string>
 #include "behaviortree_cpp/action_node.h"
@@ -14,10 +14,10 @@ namespace dummy_bt_nodes
 ///
 /// XML usage:
 ///   <YesNo text="Are you sure?" confirmed="{user_confirmed}"/>
-class Confirm : public BT::SyncActionNode
+class YesNo : public BT::SyncActionNode
 {
 public:
-  Confirm(const std::string & name, const BT::NodeConfig & conf);
+  YesNo(const std::string & name, const BT::NodeConfig & conf);
 
   BT::NodeStatus tick() override;
 
@@ -37,4 +37,4 @@ private:
 };
 
 }  // namespace dummy_bt_nodes
-#endif  // DUMMY_BT_NODES__BT_NODES__INTERACTION__CONFIRM_HPP_
+#endif  // DUMMY_BT_NODES__BT_NODES__INTERACTION__YESNO_HPP_

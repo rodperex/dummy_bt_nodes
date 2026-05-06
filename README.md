@@ -2,7 +2,7 @@
 
 ROS 2 package that provides a set of **dummy BehaviorTree.CPP action/condition nodes** for high-level testing of the planning and execution pipeline (e.g. `behavior_architecture` + `llm_planner` + `llm_bt_builder`) without requiring any real hardware or external services.
 
-Every node **only logs what it would do** and always returns `SUCCESS`. The only exception is when a required input port is missing, in which case the node returns `FAILURE` and writes a structured message to the blackboard key `bt_last_failure` so that the LLM plan orchestrator can replan accordingly.
+Nodes are lightweight test doubles: they log the intended behavior, write expected outputs to blackboard ports when needed, and avoid hardware/service dependencies.
 
 ---
 
@@ -14,10 +14,10 @@ dummy_bt_nodes/
 │   ├── bt_failure.hpp          # bt_failure() helper + description registry
 │   ├── bt_load_descriptions.hpp# utility to load descriptions from YAML
 │   └── bt_nodes/
-│       ├── interaction/        # Speak, Listen, Confirm, Ask
-│       ├── motion/             # NavigateTo, Follow, Wait
-│       ├── perception/         # IsDetected, SetTarget
-│       └── support/            # ExecuteAction
+│       ├── interaction/        # Speak, Listen, YesNo, Ask, SpeakEnum, Extract, IsAvailable
+│       ├── motion/             # NavigateTo, GetNavLocation, Follow, FollowDynamic, MoveForward, RotateToBearing, Spin, Wait
+│       ├── perception/         # IsDetected, GetBearing, GetDistance, IsFacing, IsWithinDistance, SetPerceptionTarget
+│       └── support/            # SetRos2Param, StopCurrentTask
 ├── src/bt_nodes/               # corresponding .cpp implementations
 ├── node_descriptions/
 │   └── dummy_bt_nodes.yaml     # descriptions consumed by llm_bt_builder RAG
@@ -32,37 +32,68 @@ The package builds a single shared library **`libdummy_bt_nodes_plugin.so`** tha
 
 ### Interaction
 
-| Node | Type | Required ports | Output ports |
-|---|---|---|---|
-| `Speak` | Action | `text` (string) | — |
-| `Listen` | Action | — | `speech` (string) |
-| `Confirm` | Action | `text` (string) | `confirmed` (string: `"true"`) |
-| `Ask` | Action | `question` (string) | `answer` (string) |
+| Node | Type | Required input ports | Optional input ports | Output ports |
+|---|---|---|---|---|
+| `Speak` | Action | `text` (string) | — | — |
+| `Listen` | Action | — | `timeout` (int, default `5000`) | `speech` (string) |
+| `YesNo` | Action | `text` (string) | — | `confirmed` (string) |
+| `Ask` | Action | `question` (string) | — | `answer` (string) |
+| `SpeakEnum` | Action | `list` (string) | `separator` (string, default `,`), `language` (string, default `en`) | — |
+| `Extract` | Action | `interest` (string), `text` (string) | — | `extracted_info` (string) |
+| `IsAvailable` | Condition | `available_items` (string), `items` (string) | — | `unavailable_items` (string, optional) |
 
 ### Motion
 
-| Node | Type | Required ports | Optional ports |
-|---|---|---|---|
-| `NavigateTo` | Action | `target` (string) | `x` (double), `y` (double) |
-| `Follow` | Action | `target` (string) | — |
-| `Wait` | Action | — | `seconds` (double, default `1.0`) |
+| Node | Type | Required input ports | Optional input ports | Output ports |
+|---|---|---|---|---|
+| `NavigateTo` | Action | `target` (string) | `x` (double, default `0.0`), `y` (double, default `0.0`) | — |
+| `GetNavLocation` | Action | `location_description` (string) | — | `location_frame` (string) |
+| `Follow` | Action | `target` (string) | — | — |
+| `FollowDynamic` | Action | — | `target_frame` (string, default `target`), `base_frame` (string, default `base_link`), `min_distance` (float, default `1.0`), `succeed_on_reach` (bool, default `false`) | — |
+| `MoveForward` | Action | — | `speed` (double, default `0.5`) | — |
+| `RotateToBearing` | Action | `bearing` (double) | `angular_speed` (double, default `0.5`) | — |
+| `Spin` | Action | — | `angular_speed` (float, default `0.5`) | — |
+| `Wait` | Action | — | `seconds` (double, default `1.0`) | — |
 
 ### Perception
 
-| Node | Type | Required ports | Output ports |
-|---|---|---|---|
-| `IsDetected` | Condition | `target` (string) | `detected_frame` (string — writes `target` value for downstream nodes) |
-| `SetTarget` | Action | `target` (string) | — |
+| Node | Type | Required input ports | Optional input ports | Output ports |
+|---|---|---|---|---|
+| `IsDetected` | Condition | — | `target_frame` (string, default `target`), `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `detected_frame` (string) |
+| `GetBearing` | Action | `target_frame` (string) | `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `bearing` (double) |
+| `GetDistance` | Action | `target_frame` (string) | `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `distance` (double) |
+| `IsFacing` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `angle_threshold` (double, default `0.5`), `timeout` (double, default `0.5`) | — |
+| `IsWithinDistance` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `distance_threshold` (double, default `1.0`), `timeout` (double, default `0.5`) | — |
+| `SetPerceptionTarget` | Action | `target` (string) | — | — |
+
+### Support
+
+| Node | Type | Required input ports | Optional input ports | Output ports |
+|---|---|---|---|---|
+| `SetRos2Param` | Action | `node_name` (string), `param_name` (string), `param_value` (string) | `param_type` (string, default `string`) | `success` (bool) |
+| `StopCurrentTask` | Condition | — | — | — |
+
+Compatibility aliases registered by the plugin:
+
+- `IsTargetDetected` -> same implementation as `IsDetected`
 
 ---
 
 ## Return values
 
-All nodes return `SUCCESS` after logging the action. A node returns `FAILURE` only when a **required** input port is missing, in which case it writes a structured diagnostic to the blackboard key `bt_last_failure`:
+Most nodes return `SUCCESS` after logging the action.
+
+Nodes using `bt_failure(...)` return `FAILURE` when required inputs are missing, and write a structured diagnostic to blackboard key `bt_last_failure`:
 
 ```
 node: Speak; description: Dummy action that logs the text it would speak.; failure: missing required input port 'text'
 ```
+
+Important runtime exceptions:
+
+- `StopCurrentTask` returns `SUCCESS` only if blackboard key `stop_current_task` is `true`; otherwise it returns `FAILURE`.
+- `IsAvailable` currently returns `SUCCESS` when inputs are present (dummy behavior assumes availability).
+- `Spin` returns `SUCCESS` in this package implementation.
 
 This key is read by `LLMPlanOrchestrator` (from `behavior_architecture`) to feed the replanning service with an actionable failure reason.
 

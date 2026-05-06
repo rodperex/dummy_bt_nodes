@@ -17,7 +17,10 @@ BT::NodeStatus SetTarget::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "SetTarget: missing required input 'target'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'target'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'target', received: '" + target + "'",
+      "bt_config_error");
   }
 
   if (node_) {

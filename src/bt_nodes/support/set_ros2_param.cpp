@@ -18,19 +18,28 @@ BT::NodeStatus SetRos2Param::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "SetRos2Param: missing required input 'node_name'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'node_name'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'node_name', received: '" + node_name + "'",
+      "bt_config_error");
   }
   if (!getInput("param_name", param_name) || param_name.empty()) {
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "SetRos2Param: missing required input 'param_name'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'param_name'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'param_name', received: '" + param_name + "'",
+      "bt_config_error");
   }
   if (!getInput("param_value", param_value)) {
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "SetRos2Param: missing required input 'param_value'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'param_value'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'param_value', received: '" + param_value + "'",
+      "bt_config_error");
   }
 
   std::string param_type = "string";

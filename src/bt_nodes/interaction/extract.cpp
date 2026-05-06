@@ -17,7 +17,10 @@ BT::NodeStatus Extract::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "Extract: missing required input 'interest'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'interest'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'interest', received: '" + interest + "'",
+      "bt_config_error");
   }
 
   std::string text;
@@ -25,7 +28,10 @@ BT::NodeStatus Extract::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "Extract: missing required input 'text'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'text'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'text', received: '" + text + "'",
+      "bt_config_error");
   }
 
   const std::string dummy_result = "dummy_" + interest;

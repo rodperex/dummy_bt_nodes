@@ -17,7 +17,10 @@ BT::NodeStatus Ask::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "Ask: missing required input 'question'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'question'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'question', received: '" + question + "'",
+      "bt_config_error");
   }
 
   const std::string dummy_answer = "dummy answer";

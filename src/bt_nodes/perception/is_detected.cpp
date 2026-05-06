@@ -12,20 +12,40 @@ IsDetected::IsDetected(const std::string & name, const BT::NodeConfig & conf)
 
 BT::NodeStatus IsDetected::tick()
 {
-  std::string target;
-  if (!getInput("target", target)) {
+  std::string target_frame;
+  std::string base_frame;
+  double timeout = 0.5;
+
+  if (!getInput("target_frame", target_frame)) {
     if (node_) {
-      RCLCPP_ERROR(node_->get_logger(), "IsDetected: missing required input 'target'");
+      RCLCPP_ERROR(node_->get_logger(), "IsDetected: missing required input 'target_frame'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'target'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'target_frame'",
+      "bt_config_error");
   }
 
-  if (node_) {
-    RCLCPP_INFO(node_->get_logger(), "[DUMMY] IsDetected: target=\"%s\" → true", target.c_str());
+  if (!getInput("base_frame", base_frame)) {
+    if (node_) {
+      RCLCPP_ERROR(node_->get_logger(), "IsDetected: missing required input 'base_frame'");
+    }
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'base_frame'",
+      "bt_config_error");
   }
-  // Write the detected entity name to the optional output port so downstream
-  // nodes (e.g. NavigateTo) can use it as a navigation target.
-  setOutput("detected_frame", target);
+
+  getInput("timeout", timeout);
+
+  if (node_) {
+    RCLCPP_INFO(
+      node_->get_logger(),
+      "[DUMMY] IsDetected: target_frame=\"%s\" from base_frame=\"%s\" (timeout=%.2f s) -> true",
+      target_frame.c_str(), base_frame.c_str(), timeout);
+  }
+
+  setOutput("detected_frame", target_frame);
   return BT::NodeStatus::SUCCESS;
 }
 

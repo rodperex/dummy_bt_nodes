@@ -9,12 +9,11 @@ namespace dummy_bt_nodes
 {
 
 /// Dummy condition — simulates checking whether a target is detected.
-/// Always returns SUCCESS (dummy). Fails only if 'target' port is missing.
-/// Optionally writes the detected entity's name to 'detected_frame' so
-/// downstream nodes (e.g. NavigateTo) can navigate to it.
+/// Always returns SUCCESS (dummy). It mirrors the real node interface with
+/// target_frame/base_frame/timeout and writes detected_frame = target_frame.
 ///
 /// XML usage:
-///   <IsDetected target="person_1" detected_frame="{customer_location}"/>
+///   <IsDetected target_frame="person" detected_frame="{customer_location}"/>
 class IsDetected : public BT::ConditionNode
 {
 public:
@@ -23,13 +22,15 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Condition that simulates checking whether a target entity is currently detected by the perception system. Always returns true.";
+    "Condition that simulates checking whether a target TF frame is currently detected. Always returns true in dummy mode.";
 
   static BT::PortsList providedPorts()
   {
     return {
-      BT::InputPort<std::string>("target", "Target entity name or frame id"),
-      BT::OutputPort<std::string>("detected_frame", "Writes the detected entity name to the blackboard (same as 'target')."),
+      BT::InputPort<std::string>("target_frame", "target", "Target TF frame to check"),
+      BT::InputPort<std::string>("base_frame", "base_link", "Base TF frame"),
+      BT::InputPort<double>("timeout", 0.5, "Time to wait for detection (seconds)"),
+      BT::OutputPort<std::string>("detected_frame", "Writes the detected class/frame (same as 'target_frame') to the blackboard."),
     };
   }
 

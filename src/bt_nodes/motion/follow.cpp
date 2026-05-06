@@ -17,7 +17,10 @@ BT::NodeStatus Follow::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "Follow: missing required input 'target'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'target'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'target', received: '" + target + "'",
+      "bt_config_error");
   }
 
   if (node_) {

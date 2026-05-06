@@ -22,14 +22,14 @@ public:
   BT::NodeStatus tick() override;
 
   static constexpr const char * node_description =
-    "Action that extracts information of interest from a text using an LLM service.";
+    "Action that extracts exactly one information field from a text using an LLM service. Use one Extract node per field.";
 
   static BT::PortsList providedPorts()
   {
     return {
-      BT::InputPort<std::string>("interest", "Information to extract (e.g. 'order', 'name')"),
+      BT::InputPort<std::string>("interest", "Single information field to extract (e.g. 'first_dish' or 'drink'). Do not pass multiple fields."),
       BT::InputPort<std::string>("text", "Source text to extract from"),
-      BT::OutputPort<std::string>("extracted_info", "The extracted information"),
+      BT::OutputPort<std::string>("extracted_info", "Extracted value for the single requested field"),
     };
   }
 

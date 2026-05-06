@@ -9,11 +9,11 @@ namespace dummy_bt_nodes
 {
 
 /// Dummy action — enumerates a list of items and logs them as if spoken via TTS.
-/// Splits 'text' by 'separator' and joins with a natural-language conjunction.
-/// Fails only if required input port 'text' is missing or contains no items.
+/// Splits 'list' by 'separator' and joins with a natural-language conjunction.
+/// Fails only if required input port 'list' is missing or contains no items.
 ///
 /// XML usage:
-///   <SpeakEnum text="coffee,tea,water" separator="," language="en"/>
+///   <SpeakEnum list="coffee,tea,water" separator="," language="en"/>
 class SpeakEnum : public BT::SyncActionNode
 {
 public:
@@ -27,7 +27,7 @@ public:
   static BT::PortsList providedPorts()
   {
     return {
-      BT::InputPort<std::string>("text", "Items to speak, separated by separator"),
+      BT::InputPort<std::string>("list", "Items to speak, separated by separator"),
       BT::InputPort<std::string>("separator", ",", "Item separator (default: ',')"),
       BT::InputPort<std::string>("language", "en", "Language for final conjunction: 'en' or 'es'"),
     };

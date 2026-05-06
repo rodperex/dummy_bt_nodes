@@ -17,7 +17,10 @@ BT::NodeStatus NavigateTo::tick()
     if (node_) {
       RCLCPP_ERROR(node_->get_logger(), "NavigateTo: missing required input 'target'");
     }
-    return bt_failure(config(), registrationName(), "missing required input 'target'");
+    return bt_failure(
+      config(), registrationName(),
+      "missing required input 'target', received: '" + target + "'",
+      "bt_config_error");
   }
 
   double x = 0.0, y = 0.0;
