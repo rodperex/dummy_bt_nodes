@@ -1,5 +1,5 @@
-#ifndef DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_HPP_
-#define DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_HPP_
+#ifndef DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_OPEN_QUESTION_HPP_
+#define DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_OPEN_QUESTION_HPP_
 
 #include <string>
 #include "behaviortree_cpp/action_node.h"
@@ -37,4 +37,4 @@ private:
 };
 
 }  // namespace dummy_bt_nodes
-#endif  // DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_HPP_
+#endif  // DUMMY_BT_NODES__BT_NODES__INTERACTION__ASK_OPEN_QUESTION_HPP_

@@ -12,19 +12,9 @@ IsDetected::IsDetected(const std::string & name, const BT::NodeConfig & conf)
 
 BT::NodeStatus IsDetected::tick()
 {
-  std::string target_frame;
+  const std::string target_frame = "target";
   std::string base_frame;
   double timeout = 0.5;
-
-  if (!getInput("target_frame", target_frame)) {
-    if (node_) {
-      RCLCPP_ERROR(node_->get_logger(), "IsDetected: missing required input 'target_frame'");
-    }
-    return bt_failure(
-      config(), registrationName(),
-      "missing required input 'target_frame'",
-      "bt_config_error");
-  }
 
   if (!getInput("base_frame", base_frame)) {
     if (node_) {

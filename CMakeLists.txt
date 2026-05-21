@@ -19,8 +19,8 @@ include_directories(include)
 add_library(dummy_bt_nodes_plugin SHARED
   src/bt_nodes/interaction/speak.cpp
   src/bt_nodes/interaction/listen.cpp
-  src/bt_nodes/interaction/yesno.cpp
-  src/bt_nodes/interaction/ask.cpp
+  src/bt_nodes/interaction/ask_yes_no_question.cpp
+  src/bt_nodes/interaction/ask_open_question.cpp
   src/bt_nodes/interaction/speak_enum.cpp
   src/bt_nodes/interaction/extract.cpp
   src/bt_nodes/interaction/is_available.cpp
@@ -29,17 +29,21 @@ add_library(dummy_bt_nodes_plugin SHARED
   src/bt_nodes/motion/follow.cpp
   src/bt_nodes/motion/follow_dynamic.cpp
   src/bt_nodes/motion/move_forward.cpp
+  src/bt_nodes/motion/move_towards.cpp
   src/bt_nodes/motion/rotate_to_bearing.cpp
   src/bt_nodes/motion/spin_search.cpp
   src/bt_nodes/motion/wait.cpp
   src/bt_nodes/perception/get_bearing.cpp
   src/bt_nodes/perception/get_distance.cpp
   src/bt_nodes/perception/is_detected.cpp
-  src/bt_nodes/perception/is_facing.cpp
-  src/bt_nodes/perception/is_within_distance.cpp
+  src/bt_nodes/perception/is_aligned.cpp
+  src/bt_nodes/perception/is_farther_than.cpp
+  src/bt_nodes/perception/is_target_static.cpp
   src/bt_nodes/perception/set_target.cpp
   src/bt_nodes/support/stop_current_task.cpp
   src/bt_nodes/support/set_ros2_param.cpp
+  src/bt_nodes/support/is_true.cpp
+  src/bt_nodes/support/force_plan_fail.cpp
   src/bt_nodes/bt_plugins.cpp
 )
 ament_target_dependencies(dummy_bt_nodes_plugin ${dependencies})

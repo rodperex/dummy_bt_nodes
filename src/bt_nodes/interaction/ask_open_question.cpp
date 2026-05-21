@@ -1,4 +1,4 @@
-#include "dummy_bt_nodes/bt_nodes/interaction/ask.hpp"
+#include "dummy_bt_nodes/bt_nodes/interaction/ask_open_question.hpp"
 #include "dummy_bt_nodes/bt_failure.hpp"
 
 namespace dummy_bt_nodes

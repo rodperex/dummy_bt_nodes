@@ -16,7 +16,7 @@ dummy_bt_nodes/
 │   └── bt_nodes/
 │       ├── interaction/        # Speak, Listen, YesNo, Ask, SpeakEnum, Extract, IsAvailable
 │       ├── motion/             # NavigateTo, GetNavLocation, Follow, FollowDynamic, MoveForward, RotateToBearing, Spin, Wait
-│       ├── perception/         # IsDetected, GetBearing, GetDistance, IsFacing, IsWithinDistance, SetPerceptionTarget
+│       ├── perception/         # IsDetected, GetBearing, GetDistance, IsAligned, IsInRange, SetPerceptionTarget
 │       └── support/            # SetRos2Param, StopCurrentTask
 ├── src/bt_nodes/               # corresponding .cpp implementations
 ├── node_descriptions/
@@ -62,8 +62,8 @@ The package builds a single shared library **`libdummy_bt_nodes_plugin.so`** tha
 | `IsDetected` | Condition | — | `target_frame` (string, default `target`), `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `detected_frame` (string) |
 | `GetBearing` | Action | `target_frame` (string) | `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `bearing` (double) |
 | `GetDistance` | Action | `target_frame` (string) | `base_frame` (string, default `base_link`), `timeout` (double, default `0.5`) | `distance` (double) |
-| `IsFacing` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `angle_threshold` (double, default `0.5`), `timeout` (double, default `0.5`) | — |
-| `IsWithinDistance` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `distance_threshold` (double, default `1.0`), `timeout` (double, default `0.5`) | — |
+| `IsAligned` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `angle_threshold` (double, default `0.5`), `timeout` (double, default `0.5`) | `direction` (string) |
+| `IsInRange` | Condition | `target_frame` (string) | `base_frame` (string, default `base_link`), `distance_threshold` (double, default `1.0`), `timeout` (double, default `0.5`) | — |
 | `SetPerceptionTarget` | Action | `target` (string) | — | — |
 
 ### Support
@@ -76,6 +76,7 @@ The package builds a single shared library **`libdummy_bt_nodes_plugin.so`** tha
 Compatibility aliases registered by the plugin:
 
 - `IsTargetDetected` -> same implementation as `IsDetected`
+- `IsWithinDistance` -> same implementation as `IsInRange`
 
 ---
 

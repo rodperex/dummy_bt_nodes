@@ -10,10 +10,10 @@ namespace dummy_bt_nodes
 
 /// Dummy condition — simulates checking whether a target is detected.
 /// Always returns SUCCESS (dummy). It mirrors the real node interface with
-/// target_frame/base_frame/timeout and writes detected_frame = target_frame.
+/// base_frame/timeout and writes detected_frame = 'target'.
 ///
 /// XML usage:
-///   <IsDetected target_frame="person" detected_frame="{customer_location}"/>
+///   <IsDetected detected_frame="{customer_location}"/>
 class IsDetected : public BT::ConditionNode
 {
 public:
@@ -27,7 +27,6 @@ public:
   static BT::PortsList providedPorts()
   {
     return {
-      BT::InputPort<std::string>("target_frame", "target", "Target TF frame to check"),
       BT::InputPort<std::string>("base_frame", "base_link", "Base TF frame"),
       BT::InputPort<double>("timeout", 0.5, "Time to wait for detection (seconds)"),
       BT::OutputPort<std::string>("detected_frame", "Writes the detected class/frame (same as 'target_frame') to the blackboard."),

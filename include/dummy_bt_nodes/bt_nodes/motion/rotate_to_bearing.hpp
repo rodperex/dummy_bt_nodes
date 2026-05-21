@@ -12,7 +12,7 @@ namespace dummy_bt_nodes
 /// Fails only if required input port 'bearing' is missing.
 ///
 /// XML usage:
-///   <RotateToBearing bearing="1.57" angular_speed="0.6"/>
+///   <RotateToBearing bearing="left" angular_speed="0.6"/>
 class RotateToBearing : public BT::SyncActionNode
 {
 public:
@@ -26,7 +26,7 @@ public:
   static BT::PortsList providedPorts()
   {
     return {
-      BT::InputPort<double>("bearing", "Target bearing angle in radians"),
+      BT::InputPort<std::string>("bearing", "Target bearing direction ('left' or 'right')"),
       BT::InputPort<double>("angular_speed", 0.5, "Angular speed in rad/s"),
     };
   }
